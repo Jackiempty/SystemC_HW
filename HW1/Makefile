@@ -9,9 +9,12 @@ EXE := $(SRC:%.c=$(BUILD_DIR)/%)
 
 .PHONY: all format clean
 
-all:
+all: $(EXE)
+	
+
+$(BUILD_DIR)/%: %.c
 	@mkdir -p $(BUILD_DIR)
-	gcc $(SRC) -o $(EXE)
+	gcc $< -o $@
 
 format:
 	find . -name $(BUILD_DIR) -type d \! -prune -o -iname '*.h' -o -iname '*.c' | xargs clang-format -i
