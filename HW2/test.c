@@ -65,6 +65,27 @@ void convert_to_upper(FILE* in, const char* outfile) {
   fclose(out);
 }
 
+char* my_strcat(const char* s1, const char* s2) {
+  int len1 = 0, len2 = 0;
+
+  while (s1[len1] != '\0') len1++;
+  while (s2[len2] != '\0') len2++;
+
+  char* result = (char*)malloc(len1 + len2 + 1);
+  if (!result) return NULL;
+
+  for (int i = 0; i < len1; i++) {
+    result[i] = s1[i];
+  }
+
+  for (int j = 0; j < len2; j++) {
+    result[len1 + j] = s2[j];
+  }
+
+  result[len1 + len2] = '\0';
+  return result;
+}
+
 int main(int argc, char* argv[]) {
   if (argc != 2) {
     fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
@@ -87,7 +108,8 @@ int main(int argc, char* argv[]) {
 
   // rewind first and then transform after
   rewind(fp);
-  convert_to_upper(fp, "UPPER.txt");
+  char* output_name = my_strcat(argv[0], "_upper.txt");
+  convert_to_upper(fp, output_name);
 
   fclose(fp);
   return 0;
